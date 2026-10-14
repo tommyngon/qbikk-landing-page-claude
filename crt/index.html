@@ -22,7 +22,7 @@
 <li>Show on the real CRT: open a demo with <code>?mode=crt</code> (the CRT buttons do this), then press <kbd>F</kbd>.</li></ul></div>
 </main>
 <script>
-fetch('demos/manifest.json').then(r=>r.json()).then(ids=>Promise.all(ids.map(id=>fetch('demos/'+id+'/demo.json').then(r=>r.json())))).then(ds=>{
+fetch('demos/manifest.json').then(r=>r.json()).then(ids=>Promise.all(ids.map(id=>fetch('demos/'+id+'/demo.json').then(r=>r.ok?r.json():null).catch(()=>null)))).then(ds=>{ ds=ds.filter(Boolean);
   document.getElementById('list').innerHTML = ds.map(d=>`<div class="card"><h2>${d.title}${d.status?`<span class="tag">${d.status}</span>`:''}</h2><p>${d.description}</p>
   <a class="btn" href="demos/${d.id}/?mode=preview">Preview</a><a class="btn alt" href="demos/${d.id}/?mode=crt">CRT mode</a></div>`).join('');
 });
